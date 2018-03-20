@@ -1,0 +1,154 @@
+NAME:  titanic3
+TYPE:  Census
+SIZE:  1309 Passengers, 14 Variables
+
+DESCRIPTIVE ABSTRACT: The titanic3 data frame describes the survival
+status of individual passengers on the Titanic.  The titanic3 data
+frame does not contain information for the crew, but it does contain
+actual and estimated ages for almost 80% of the passengers.
+
+SOURCES: Hind, Philip.  "Encyclopedia Titanica."  Online.  Internet.
+n.p.  02 Aug 1999.  Avaliable http://atschool.eduweb.co.uk/phind
+
+VARIABLE DESCRIPTIONS:
+pclass          Passenger Class
+                (1 = 1st; 2 = 2nd; 3 = 3rd)
+survival        Survival
+                (0 = No; 1 = Yes)
+name            Name
+sex             Sex
+age             Age
+sibsp           Number of Siblings/Spouses Aboard
+parch           Number of Parents/Children Aboard
+ticket          Ticket Number
+fare            Passenger Fare
+cabin           Cabin
+embarked        Port of Embarkation
+                (C = Cherbourg; Q = Queenstown; S = Southampton)
+boat            Lifeboat
+body            Body Identification Number
+home.dest       Home/Destination
+
+SPECIAL NOTES:
+Pclass is a proxy for socio-economic status (SES)
+ 1st ~ Upper; 2nd ~ Middle; 3rd ~ Lower
+
+Age is in Years; Fractional if Age less than One (1)
+ If the Age is Estimated, it is in the form xx.5
+
+Fare is in Pre-1970 British Pounds (£)
+ Conversion Factors:  1£ = 12s = 240d and 1s = 20d
+
+With respect to the family relation variables (i.e. sibsp and parch)
+some relations were ignored.  The following are the definitions used
+for sibsp and parch.
+
+Sibling:  Brother, Sister, Stepbrother, or Stepsister of Passenger Aboard Titanic
+Spouse:   Husband or Wife of Passenger Aboard Titanic (Mistresses and Fiancées Ignored)
+Parent:   Mother or Father of Passenger Aboard Titanic
+Child:    Son, Daughter, Stepson, or Stepdaughter of Passenger Aboard Titanic
+
+Other family relatives excluded from this study include cousins,
+nephews/nieces, aunts/uncles, and in-laws.  Some children travelled
+only with a nanny, therefore parch=0 for them.  As well, some
+travelled with very close friends or neighbors in a village, however,
+the definitions do not support such relations.
+
+STORY BEHIND THE DATA: 
+This dataset is based on the Titanic Passenger List edited by Michael
+A. Findlay, originally published in Eaton & Haas (1994) Titanic:
+Triumph and Tragedy, Patrick Stephens Ltd, and expanded with the help
+of the internet community.  The original HTML files were obtained by
+Philip Hind (1999).
+
+PEDAGOGICAL NOTES:
+This dataset is ideal for teaching basic functions in S-PLUS in the
+realm of Statistical Computing and Graphics.  It can also prove useful
+in teaching binary logistic regression and methods of imputation, both
+single and multiple.  The dataset is also useful for demonstrating
+many of the functions available in Frank Harrell's Hmisc library as
+well as demonstrating binary logistic regression analysis using the
+Design library.
+
+An interesting result may be obtained using functions from the Hmisc
+library in S-PLUS
+
+attach(titanic3)
+plsmo(age, survived, group=sex, datadensity=T)         # OR group=pclass
+plot(naclus(titanic3))                                 # study patterns of missing values
+summary(survived ~ age + sex + pclass, data=titanic3)
+
+REFERENCES:
+Harrell FE.  "Predicting Outcomes: Applied Survival Analysis and
+Logistic Regression."  Book manuscript available from the University
+of Virginia Bookstore, 1999.
+
+SUBMITTED BY:
+Thomas E. Cason, Undergraduate Research Assistant
+Division of Biostatistics and Epidemiology
+Department of Health Evaluation Sciences
+University of Virginia School of Medicine
+Box 600, Charlottesville, VA 22908 USA
+Electronic Mail:  tcason@virginia.edu
+
+----------------------------------------------------------------------
+FREQUENTLY ASKED QUESTIONS ABOUT THE DATASET
+
+1. For those over age 25 the mean # spouses/siblings is about .34 -
+   seems a little low
+
+The only explanation I can offer (without a deep search) is the
+overwhelming "Third Class Bias" as I call it.  Many third class
+passengers travelled alone... or some with friends... which is
+not under the umbrella of the sibsp definition.  Also, many 3rd
+classers were immigrating to the US... they were married... but
+were sent off alone to establish a "foothole" and then later sent
+for their spouses... if they survived... most did not.
+
+2. For those under age 14 the mean # parents/children is 1.37 -
+   seems a bit low
+
+Again... not all children travelled with their parents...
+especially in 3rd class.  Some children travelled with older
+siblings... nannies... aunts/uncles... etc.  Actually, more often
+than not... children travelled with only one parent.
+
+-TEC
+
+
+After further investigation... I found my initial instincts regarding
+the low means to be correct.  There's not much else to say about it...
+but I'll cite some unusual passenger cases that may come up in the
+future regarding this issue.
+
+Case #1:  Emanuel, Miss. Virginia Ethel... 3d Class... Age 5...
+sibsp/parch=0/0
+Boarded with her nurse Miss. Elizabeth Dowdell... escorted her to
+grandparents' home in New York, NY.
+
+Case #2:  Hassan, Mr. Houssein G N... 3d Class... Age 11...
+s/p=0/0
+Traveled with family friend Mr. Nassef Cassem Albimona... going
+to visit his parents in American from Lebanon.  (Interesting
+Note:  Albimona was from Fredericksburg, VA)
+
+Case #3:  Ayoub, Miss. Banoura... 3d Class... Age 13... s/p=0/0
+Boarded with 5 cousins... travelling to Detroit, MI to be
+reunited with family.
+
+Case #4:  Nasser, Mrs. Nicholas Nasser... 2d Class... Age 14...
+s/p=1/0
+Married to a 32 year old man... sibsp stands for spouse rather
+than sibling... unusual at such a young age.  She lied when she
+boarded the Titanic and claimed she was 18... however, her birth
+certificate proves that on April 15, 1912 she was 14... not 18!
+
+I hope this provides some insight to a few uncommon instances
+where the definitions do not encompass the actual travel status
+of a passenger.
+
+There were only one or two instances of family members
+"crossing pclass lines"... and they were included and counted for
+in sibsp and parch.
+
+-TEC
