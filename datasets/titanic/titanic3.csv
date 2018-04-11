@@ -1308,4 +1308,3 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,fare,cabin,embarked,boat,body,ho
 3,0,"Zakarian, Mr. Mapriededer",male,26.5,0,0,2656,7.2250,,C,,304,
 3,0,"Zakarian, Mr. Ortin",male,27,0,0,2670,7.2250,,C,,,
 3,0,"Zimmerman, Mr. Leo",male,29,0,0,315082,7.8750,,S,,,
-,,,,,,,,,,,,,
