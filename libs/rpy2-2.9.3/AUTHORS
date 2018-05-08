@@ -1,0 +1,23 @@
+
+
+Author
+------
+Laurent Gautier
+Copyright Laurent Gautier 2008-2010
+
+People have contributed suggestions or patches; they are thanked here,
+rpy2 is much better because of them.
+
+rpy2 is making a limited use (if much left) of code from:
+
+RPy - http://rpy.sourceforge.net
+--------------------------------
+(in rinteface/rinterface.c)
+Copyright Walter Moreira 2002-2003
+Copyright Gregory Warnes 2003-2008
+
+Parseltongue project - http://serpent.speak.googlepages.com/
+------------------------------------------------------------
+(in rinterface/rinterface.c)
+Copyright Alexander Belopolsky - 2006
+

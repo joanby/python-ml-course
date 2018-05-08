@@ -1,0 +1,2080 @@
+Release 2.9.3
+=============
+
+Bugs fixed
+----------
+
+- Delegate finding where is local time zone file to either a user-specified
+  module-level variable `default_timezone` or to the third-party
+  module :mod:`tzlocal` (issue #448).
+
+
+Release 2.9.2
+=============
+
+Changes
+-------
+
+- The pandas converter is converting :class:`pandas.Series` of `dtype` `"O"`
+  to :class:`rpy2.robjects.vectors.StrVector` objects, issueing a warning
+  about it (See issue #421).
+
+- The conversion of pandas data frame is now working with columns rather
+  than rows (introduce in bug fix for issue #442 below) and this is expected
+  to result in more efficient conversions.
+
+Bugs fixed
+----------
+
+- Allow floats in figure sizes for R magic (Pull request #63)
+
+- Fixed pickling unpickling of robjects-level instances,
+  regression introduced in fix for issue #432 with release 2.9.1 (issue #443).
+
+- Fixed broken unit test for columns of `dtype` `"O"` in `pandas` data frames.
+
+- Fixed incorrect conversion of R factors in data frames to columns of
+  integers in pandas data frame (issue #442).
+
+
+Release 2.9.1
+=============
+
+Changes
+-------
+
+- Fixing issue #432 (see Section Bugs fixed below) involved removed the method
+  `__reduce__` previously provided for all rpy2 objects representing R objects.
+
+Bugs fixed
+----------
+
+- An error when installing with an unsupported R version was fixed (issue #420).
+
+- The docstring for `rinterface.endr()` was improperly stating that the function was not taking
+  any argument (issue #423).
+
+- Target version of dplyr and tidyr are now 0.7.4 and 0.7.2 respectively. 
+
+- Fixed memory leak when pickling objects (issue #432). Fixing the leak caused a
+  slight change in the API (see Section Changes above).
+
+- Conversion to :mod:`pandas` now handling R ordered factor (issue #398).
+
+- :mod:`jinja2` was not listed as a dependency (issue #437).
+
+
+Release 2.9.0
+=============
+
+New features
+------------
+
+- New module :mod:`rpy2.situation` to extract and report informations
+  about the environment, such as where is the R HOME, what is the
+  version of R, what is the version of R rpy2 was built with, etc...
+  The module is also designed to be run directly and provide diagnostics:
+  `python -m rpy2.situation`.
+
+- :meth:`Environment.values`, :meth:`Environment.pop`,
+  :meth:`Environment.popitems`, :meth:`Environment.clear`
+  to match :meth:`dict.values`,
+  :meth:`dict.pop`, :meth:`dict.popitems`, :meth:`dict.clear`.
+
+- :class:`VectorOperationsDelegator` now has a method `__matmul__` to implement
+  Python's matrix multiplication operator (PEP-0645).
+
+- A rule to convert R POSIXct vectors to pandas Timestamp vectors was added (issue #418).
+
+- method :meth:`_repr_html_` for R vectors to display HTML in jupyter.
+
+
+Changes
+-------
+
+- Starting several times the singleton :class:`EventProcessor` longer results
+  in a :class:`RuntimeError`. This is now only a warning, addressing
+  issue #182.
+
+- The target version for the R package `dplyr` mapped is now 0.7.1, and
+  :func:`rpy2.robjects.lib.dplyr.src_dt` (issue #357) and
+  :func:`rpy2.robjects.lib.dplyr.src_desc` are no longer present.
+
+- :meth:`Environment.keys` is now a iterator to match :meth:`dict.keys`,
+  also an interator in Python 3.
+
+- Target version of `ggplot2` library is 2.2.1.
+
+- Option `stringsasfactors` in the constructor for the class `DataFrame`. If `False`, the
+  strings are no longer converted to factors. When converting from pandas data frames
+  the default is to no longer convert columns of strings to factors.
+
+- The R "magic" for jupyter is now more consistently using the conversion system, and the
+  use of custom converters through the magic argument `-c` will work as expected.
+
+- Docker-related files moved to directory docker/ (where variants image for rpy2 are available)
+
+
+Bugs fixed
+----------
+
+- :func:`numpy.float128` is not available on all platforms. The unit test
+  for it is now skipped on systems where it is not present (issue #347)
+
+- R pairlist objects can now be sliced (and issue #380 is resolved).
+
+- Passing parameters names that are empty string to R function was
+  causing a segfault (issue #409).
+
+- Trying to build an atomic R vector from a Python object that has a length,
+  but it not a sequence nor an iterator was causing a segfault (issue #407).
+
+
+Release 2.8.6
+=============
+
+Bugs fixed
+----------
+
+- Trying to build an atomic R vector from a Python object that has a length,
+  but it not a sequence nor an iterator was causing a segfault (issue #407 -
+  backport from rpy2-2.9.0).
+
+
+Release 2.8.5
+=============
+
+Bugs fixed
+----------
+
+- The defintion of the method :class:`rpy2.rlike.container.OrdDict.items`
+  was incorrect, and so was the documentation for `rcall` (issue #383)
+  
+- Giving an empty sequence to :meth:`robjects.sequence_to_vector` is now
+  raising a :class:`ValueError` rather than fail with an
+  :class:`UnboundLocalError` (see issue #388).
+
+- :meth:`robjects.robject.RSlots.items` is now working (see pull request #57).
+
+
+Release 2.8.4
+=============
+
+Bugs fixed
+----------
+
+- The context manager :func:`rpy2.robjects.lib.grdevices.render_to_file`
+  is no longer trying to impose a file name generated by :mod:`tempfile`
+  (issue #371)
+
+- The symbol `LISTSXP` (corresponding to R pairlist objects) was not
+  imported from the C module in rpy2.
+
+- The functions `scale_linetype_discrete` and `scale_linetype_continuous`
+  in ggplot2 were not wrapped by :mod:`rpy2.robjects.lib.ggplot2`
+  (issue #381)
+
+
+Release 2.8.3
+=============
+
+Bugs fixed
+----------
+
+- Fixed the error when the transformation of R "man" pages into Python
+  docstrings was failing when the section "arguments" was missing
+  (issue #368)
+  
+- Failing to find R in the PATH during the installation of rpy2
+  is now printing an error message instead of a warning (issue #366)
+  
+  
+Release 2.8.2
+=============
+
+Bugs fixed
+----------
+
+- R's `dplyr::src_dt` was moved to `dtdplyr::src_dt` with `dplyr` release 0.5.0.
+  To address this, `src_dt` will become a `None` if the R package `dplyr` is
+  discovered to be of version >= 0.5.0 at runtime. (issue #357)
+
+- Conversion issue when R symbols were accessed as attribute of the singleton
+  :class:`rpy2.robjects.R`. (issue #334)
+
+- The `rmagic` extension for `ipython` was no longer loading with the latest
+  ipython (version 5.0.0). (issue #359)
+  
+Changes
+-------
+
+- The fix to issue #357 (see bugs fixed above) was expanded to cover all
+  R packages wrapped in :mod:`rpy2.robjects.lib` and ensure that the respective
+  Python modules can loaded even if symbols are no longer defined in future
+  versions of the corresponding R packages.
+
+
+Release 2.8.1
+=============
+
+New features
+------------
+
+- `Dockerfile` with automated build on dockerhub (https://hub.docker.com/r/rpy2/rpy2)
+
+Bugs Fixed
+----------
+
+- Trying to install rpy2 while R is not in the `PATH` resulted in an error
+  in `setup.py`.
+
+
+Release 2.8.0
+=============
+
+New features
+------------
+
+- New class :class:`rpy2.robjects.SourceCode`. The class extends Python's
+  :class:`str` and is meant to represent R source code. An HTML
+  renderer for the ipython notebook (syntax highlighting using
+  :mod:`pygment` is also added).
+  
+- New module :mod:`rpy2.robjects.lib.tidyr` providing a custom
+  wrapper for the R library `tidyr`
+
+- The long-deprecated functions :func:`rpy2.rinterface.set_writeconsole` and
+  :func:`rpy2.rinterface.get_writeconsole` are no longer available. One of
+  :func:`rpy2.rinterface.set_writeconsole_regular` / :func:`rpy2.rinterface.set_writeconsole_warnerror`
+  or :func:`rpy2.rinterface.get_writeconsole_regular` / :func:`rpy2.rinterface.get_writeconsole_warnerror`
+  respectively should be used instead.
+  
+- The attribute :attr:`rpy2.robjects.RObject.slots` can now be implictly interated on
+  (the method :meth:`__iter__` is now an alias for :meth:`keys`).
+
+- The default Python-R conversion is now handling functions. This means that
+  Python function can directly be used as parameters to R functions (when
+  relevant).
+
+- Ipython display hook `display_png` for ggplot2 graphics.
+
+- :mod:`pandas` "category" vectors are better handled by the pandas conversion.
+
+- New module :mod:`rpy2.robjects.lib.grdevices` providing a custom
+  wrapper for the R library 'grDevices', exposing few key functions in
+  the package and providing context managers (`render_to_file` and
+  `render_to_bytesio`) designed to simplify the handling of static plots
+  (e.g., webserver producing graphics on the fly or figure embedded in a
+  Jupyter notebook).
+
+- Numpy conversion is handling better arrays with `dtype` equal to `"O"`
+  when all objects are either all inheriting from :class:`str` or from
+  :class:`bytes`. Such arrays are now producing :class:`StrSexpVector` or
+  :class:`BytesSexpVector` objects respectively.
+  
+- R's own printing of warnings if now transformed to warnings of type
+  `rinterface.RRuntimeWarning` (it used to be a regular `UserWarning`)
+
+- The family of functions `src_*` and the function `tbl` in the R package
+  `dplyr` have aliases in the module :mod:`rpy2.robjects.lib.dplyr`, and
+  a class :class:`DataSource` has been added for convenience.
+
+- :class:`rpy2.robjects.vectors.DataFrame` has a method `head` corresponding
+  to R's method of the same name. The method takes the n first row of a
+  data frame.
+
+- dplyr's functions `count_` and `tally` are now exposed as methods for
+  the class :class:`dplyr.DataFrame`.
+
+Changes
+-------
+
+- Building/installing rpy2 with a development version of R does not require
+  the use of option `--ignore-check-rversion` any longer. A warning is
+  simply issue when the R version is "development".
+
+- On MSWindows, the dependency on `pywin32` was removed (issue #315)
+
+- :class:`GroupedDataFrame` in the dplyr interface module is now inheriting
+  from the definition of DataFrame in that same module (it was previously
+  inheriting from :class:`robjects.vectors.DataFrame`).
+
+- The default `repr()` for R objects is now printing the R classes
+  (as suggested in issue #349).
+
+Bugs Fixed
+----------
+
+- Parameter names to R function that are in UTF-8 are no longer causing a
+  segfault (issue #332)
+  
+- Looking for a missing key in an R environment (using `__getitem__` or `[`)
+  could raise a `LookupError` instead of a `KeyError`.
+
+- R environment can now handle unicode keys as UTF-8 (was previously
+  trying Latin1)
+
+- rpy2 is interrupting attempts to install with Python < 2.7 with an
+  informative error message (issue #338)
+
+- Setting the R class can be done by using a simple Python string (issue #341)
+
+- `rpy2.robjects.lib.grid.viewport` is now returning an instance of class
+  `Viewport` (defined in the same module) (issue #350)
+  
+
+Release 2.7.9
+=============
+
+Bug fixed
+---------
+
+- Python objects exposed to R could lead to segfault when the Python process is
+  exiting (issue #331)
+
+
+Release 2.7.8
+=============
+
+Bugs fixed
+----------
+
+- American English spelling was missing for some of the function names
+  to specify colour (color) scales.
+  
+- Fix for printing R objects on Windows (pull request #47)
+
+
+Release 2.7.7
+=============
+
+Bugs fixed
+----------
+
+- Pickling `robjects`-level objects resulted in `rinterface`-level objects
+  when unpickled (issue #324).
+
+
+Release 2.7.6
+=============
+ 
+Changes
+-------
+
+- :mod:`rpy2.robjects.lib.ggplot2` was modified to match the newly released
+  ggplot2-2.0.0. This is introducing API-breaking changes, which breaks the
+  promise to keep the API stable through bugfix releases within series, but
+  without it 2.7.x will not a work with new default installation of the R
+  package ggplot2.
+
+
+Release 2.7.5
+=============
+
+Bugs fixed
+----------
+
+- Division and floordivision through the delegator `.ro` provided with
+  R vectors wrapped by `robjects`. (issue #320)
+
+- Memory leak when unserializing (unpickling) R objects bundled in Python
+  objects (issue #321)
+  
+
+Release 2.7.4
+=============
+
+Bugs fixed
+----------
+
+- Python 3.5 highlighted slightly incorrect C-level flags in rpy2 objects
+  declarations, and :mod:`rpy2.robjects` could not be imported.
+  
+- Fixed unit tests for rmagic when :mod:`numpy` is not installed, and
+  for :mod:`numpy` is installed by :mod:`pandas` in missing.
+
+
+Release 2.7.3
+=============
+
+Bugs fixed
+----------
+
+- method :meth:`DataFrame.collect` in :mod:`rpy2.robjects.lib.dplyr`
+  was not functioning.
+
+- Applied patch by Matthias Klose to fix implict pointer conversions.
+
+- :mod:`pandas2ri.ri2py_dataframe` is now propagating the row names
+  in the R data frame into an index in the pandas data frame (issue #285)
+
+- methods `union`, `intersect`, `setdiff`, `ungroup` defined in the R package
+  `dplyr` were missing from the
+  `DataFrame` definition in :mod:`rpy2.robjects.lib.dplyr`
+
+
+Release 2.7.2
+=============
+
+Bugs fixed
+----------
+
+- methods `distinct`, `sample_n`, and `sample_frac` defined in the R package
+  `dplyr` were missing from the `DataFrame` definition in
+  :mod:`rpy2.robjects.lib.dplyr`
+
+- The fix for the inheritance problem with
+  :mod:`rpy2.robjects.lib.dplyr.DataFrame` introduced a regression whenever
+  `group_by` is used.
+
+- The methods to perform joins on dplyr `DataFrame` objects where not
+  working properly.
+
+
+Release 2.7.1
+=============
+ 
+Bugs fixed
+----------
+
+- The :meth:`__repr__` for :mod:`robjects`-level vectors
+  was broken for vectors of length 1 (issue #306)
+
+- The ipython notebook-based sections of the documentation
+  were not building
+
+- Classes inheriting from :mod:`dplyr.DataFrame` had dplyr methods
+  returning objects of their parent class.
+
+Release 2.7.0
+=============
+
+New features
+------------
+
+- New exception :class:`rpy2.rinterface.RParsingError`. Errors
+  occurring when parsing R code through :func:`rpy2.rinterface.parse`
+  raise this exception (previously :class:`rpy2.rinterface.RRuntimeError`).
+
+- New class :class:`rpy2.robjects.conversion.Converter` to replace
+  the `namedtuple` of the same name
+
+- New class :class:`rpy2.robjects.converter.ConversionContext`. This is
+  a context manager allowing an easy setting of local conversion rules.
+  The constructor has an alias called
+  :meth:`rpy2.robjects.constructor.localconverter`.
+
+- New module :mod:`rpy2.robjects.lib.dplyr` providing a custom
+  wrapper for the R library `dplyr`
+
+- Method :meth:`Environment.items()` to iterate through the symbols
+  and associated objects in an R environment.
+
+- Exception :class:`rpy2.rinterface.ParsingIncompleError`, a child class of
+  :class:`rpy2.rinterface.ParsingError`, raised when
+  calling :meth:`rpy2.rinteface.parse` results in R's C-level status
+  to be `PARSE_INCOMPLETE`. This can make the Python implementation of an
+  IDE for R easier.
+  
+- Attribute :attr:`slots` for :mod:`rpy2.robjects`-level objects. The
+  attribute is a :class:`rpy2.robjects.Rslots` which
+  behaves like a Python mapping to provide access to R-attributes
+  for the object (see issue #275).
+
+- The R "magic" for ipython `%%R` can be passed a local converter
+  (see new features above) by using `-c`.
+
+
+Bugs fixed
+----------
+
+- Conversion rules were not applied when parsing and evaluating string
+  as R with :class:`rpy2.robjects.R`.
+
+- Calling the constructor for :class:`rpy2.robjects.vectors.FactorVector`
+  with an R factor is no longer making a copy, loosing the associated
+  R attributes if any (fixes issue #299).
+
+- `rpy2` could crash when R was unable to dynamically load the C extension for
+  one of its packages (noticed with issue #303).
+  
+
+Changes
+-------
+
+- :func:`rpy2.rinterface.is_initialized` is now a function.
+
+- :meth:`rpy2.robjects.R.__call__` is now calling R's `base::parse()`
+  to parse the string rather the parser through R's C-API. The workaround
+  let's us retrieve R's error message in case of failure (see issue #300)
+
+
+Release 2.6.3
+=============
+
+Bug fixed
+---------
+
+- Metaclass `RS4Auto_Type` facilitating the creation of Python
+  classes from R S4 classes was not handling classes without
+  methods (issue #301)
+
+
+Release 2.6.2
+=============
+
+Bugs fixed
+----------
+ 
+- Check that R >= 3.2 is used at build time (issue #291)
+
+- Conversion rules were not applied when parsing and evaluating string
+  as R code with :class:`rpy2.robjects.R`.
+
+
+Release 2.6.1
+=============
+
+New features
+------------
+
+- Because of their long names, the classes
+  :class:`SignatureTranslatedAnonymousPackage`,
+  :class:`SignatureTranslatedPackage`, and
+  :class:`SignatureTranslatedFunction`
+  in :mod:`rpy2.robjects.packages` have now the aliases
+  :class:`STAP`, :class:`STP`, and :class:`STF` respectively.
+
+Bugs fixed
+----------
+
+- Typo in function name emitting warnings at build time (issue #283)
+ 
+- The conversion of `TaggedList` instances is now handling the names
+  of items in the list (issue #286)
+
+
+Changes
+-------
+
+- Loading the `ipython` extension in the absence of `pandas` or `numpy`
+  is now issuing a warning (issue #279)
+  
+  
+Release 2.6.0
+=============
+
+New features
+------------
+
+- Report the existence during build time of a file `.Renviron`,
+  or the definition of the environment variables `R_ENVIRON' or
+  `R_ENVIRON_USER` with a warning. (issue #204)
+
+- Moved console writting callback to use `ptr_R_WriteConsoleEx`
+  rather than `ptr_R_WriteConsole`. This allows callbacks
+  for warnings and messages. `get/set_writeconsole` is now 
+  replaced by `get/set_writeconsole_regular` (regular
+  output) and `get/set_writeconsole_warnerror` (warning and error).
+  In order to conserve backward compatibility an alias for
+  `get/set_writeconsole_regular` called `get/set_writeconsole` is
+  provided.
+
+- Added callback for `ptr_R_ResetConsole`.
+
+- :mod:`pandas` :class:`Categorical` objects are automatically handled
+  in the pandas converter.
+
+- The translation of R symbols into Python symbols used in `importr` and
+  underlying classes and methods can be customized with a callback.
+  The default translation turning `.` into `_` is `default_symbol_r2python`.
+
+- Translation of named arguments in R function is now sharing code with the
+  translation of R symbols (see point above), providing a consistent way to
+  perform translations.
+
+- Utility function `sequence_to_vector` in `robjects` to convert Python
+  sequences (e.g., `list` or `tuple`) to R vector without having to
+  specify the type (the type is inferred from the list).
+
+- :mod:`robjects.vectors` object have a property :attr:`NAvalue` that contains
+  the `NA` value for the vector, allowing generic code on R vectors.
+  For example, testing whether any vector contains `NA` can be written as
+  `any(x is myvector.NAvalue for x in myvector)`. Making numpy /masked/ array
+  is an other application.
+
+Changes
+-------
+
+- The automatic name translation from R to Python used in `importr` is
+  now slightly more complex. It will not only translate `.` to `_` but
+  should a conflict arise from the existence in R of both the `.` and `_`
+  versions the `.` version will be appended a `_` (in accordance with
+  :pep:0008). The change was discussed in issue #274).
+
+- The ipython 'R magic' is now starting with a default conversion mode
+  that is `pandas2ri` if it can find it, then `numpy2ri` if it can find it,
+  and then the basic conversion.
+
+- R vectors are now typed at the C level (IntSexpVector, FloatSexpVector,
+  ListSexpVector, etc...) whenever retrieving them from the embedded R
+  with the low-level `rinterface`. This is facilitating dispatch on vector
+  type (e.g., with `singledispatch` now used for the conversion system).
+  
+Bugs fixed
+----------
+
+- The evaluation of R code through R's C-level function `tryEval`
+  caused console output whenever an error occurred. Moving to
+  the seemingly experimental `tryEvalSilent` makes evaluations less
+  verbose.
+
+- Multiple plots in one ipython cell (pull request #44)
+
+Release 2.5.7
+=============
+
+- `simplegeneric` was moved of ipython 4.0.0 (pull request #43)
+
+
+Release 2.5.6
+=============
+
+Bugs fixed
+----------
+
+- Detection of the R version during setup on Win8 (issues #255 and #258)
+
+- Segmentation fault when converting :mod:`pandas` :class:`Series` with
+  elements of type object (issue #264)
+
+- The default converter from Python (non-rpy2) objects to rinterface-level
+  objects was producing robjects-level objects whenever the input was of
+  type :class:`list` (discovered while fixing issue #264)
+
+- Implemented suggested fix for issue with unlinking files on Windows
+  (issue #191)
+
+- Testing rpy2 in the absence of ipython no longer stops with an error
+  (issue #266)
+
+
+Release 2.5.5
+=============
+
+Bugs fixed
+----------
+
+- Crash (segfault) when querying an R object in an R environment triggers an
+  error (symbol exists, but associated values resolves to an error - issue #251)
+
+- Change in the signature of `rcall` was not updated in the documentation
+  (issue #259)
+
+- Minor update to the documentation (issue #257)
+
+
+Release 2.5.4
+=============
+
+Bugs fixed
+----------
+
+- Filter PNG files on size, preventing empty files causing trouble to be
+  ipython notebook rendering of graphics later on (slight modification of
+  the pull request #39)
+
+- Fix installation left unresolved with rpy2-2.5.3 (issue #248)
+
+- Possible segfault with Python 3.4 (issue #249)
+
+
+Release 2.5.3
+=============
+
+Changes
+-------
+
+- `setup.py` has `install_requires` in addition to `requires` in the hope to
+   fix the missing dependency with Python 2 (:mod:`singledispatch` is required
+   but not installed).
+
+Bugs fixed
+----------
+
+- Extracting configuration information from should now work when R is emitting a warning (issue #247) 
+
+- On OS X the library discovery step can yield nothing (see issue #246). A tentative fix is to issue
+  a warning and keep moving.
+
+
+Release 2.5.2
+=============
+
+Bugs fixed
+----------
+
+- String representation of :class:`robjects.R` (issue #238)
+
+- Check during `build_ext` if unsupported version of R (pull request #32)
+
+- HTMl display of columns of factors in a DataFrame (issue #236)
+
+- HTML display of factors (issue #242)
+
+
+Release 2.5.1
+=============
+
+Bugs fixed
+----------
+
+- Require singledispatch if Python 3.3 (issue #232)
+
+- Fixed bug when R spits out a warning when asked configuration information (issue #233)
+
+- Restored printing of compilation information when running `setup.py`
+
+- Fixed installation issue on some systems (issue #234)
+
+- Workaround obscure failure message from unittest if Python < 3.4 and
+  :mod:`singledispatch` cannot be imported (issue #235)
+
+
+Release 2.5.0
+=============
+
+New features
+------------
+
+- Experimental alternative way to preserve R objects from garbage collection.
+  This can be activated with `rinterface.initr(r_preservehash=True)` (default
+  is `False`.
+
+- :class:`GGPlot` object getting a method :meth:`save`
+  mirroring R's `ggplot2::ggsave()`.
+
+- The conversion system is now using generics/single dispatch.
+
+- New module :mod:`rpy2.ipython.html` with HTML display for rpy2 objects
+
+- [Experimental] New function :func:`robjects.methods.rs4instance_factory`
+  to type RS4 objects with more specificity.
+
+Changes
+-------
+
+- The script `setup.py` was rewritten for clarity and ease of maintenance.
+  Now it only uses `setuptools`.
+
+
+Release 2.4.4
+=============
+
+Bugs fixed
+----------
+
+- Use `input` rather than `raw_input` in the default console callback
+  with Python 3 (fixes issue #222)
+
+- Issues with conversions, pandas, and rmagic (fixes issue #218 and more)
+
+
+Release 2.4.3
+=============
+
+Bugs fixed
+----------
+
+- `geom_raster` was missing from `rpy2.robjects.lib.ggplot2` (pull request #30)
+
+- Fixed issue with SVG rendering in ipython notebook (issue #217)
+
+- Regression with `rx2()` introduced with new conversion (issue #219)
+
+- Fixed documentation (missing `import`) (issue #213)
+
+
+Release 2.4.2
+=============
+
+Bugs fixed
+----------
+
+- Assigning an R `DataFrame` into an environment was failing if
+  the conversion for Pandas was activated. (Issue #207)
+
+
+Release 2.4.1
+=============
+
+Bugs fixed
+----------
+
+- :meth:`rpy2.ipython` fixed spurious output to notebook cells.
+
+
+
+Release 2.4.0
+=============
+
+Changes
+-------
+
+- Conversion system slightly changed, with the optional
+  conversions for :mod:`numpy` and :mod:`pandas` modified
+  accordingly. The changes should only matter if using
+  third-party conversion functions.
+ 
+- The Python 3 version is now a first class citizen. `2to3`
+  is no longer used, and the code base is made directly
+  compatible with Python. This lowers significantly the
+  installation time with Python 3 
+  (which matters when developping rpy2).
+
+- The default options to initialize R (`rpy2.rinterface.initoptions') are no longer
+  `('rpy2', '--quiet', '--vanilla', '--no-save')` but now
+  `('rpy2', '--quiet', '--no-save')`.
+
+- :class:`robjects.vectors.ListVector` can be instanciated from
+  any objects with a method `items()` with the expectation that the method
+  returns an iterable of (name, value) tuples, or even be an iterable
+  of (name, value) tuples.
+
+New features
+------------
+
+- For instances of :class:`rpy2.robjects.Function`,
+  the `__doc__` is now a property fetching information
+  about the parameters in the R signature.
+
+- Convenience function :func:`rpy2.robjects.packages.data`
+  to extract the datasets in an R pacakges
+
+- :mod:`ipython`'s `rmagic` is now part of :mod:`rpy`. To use, `%load_ext
+  rpy2.ipython` from within IPython.
+
+- new method :meth:`rpy2.rinterface.SexpEnvironment.keys`, returnings
+  the names in the environment as a tuple of Python strings.
+
+- convenience class :class:`robjects.packages.InstalledPackages`, with a companion function
+  :func:`robjects.packages.isinstalled`.
+
+- new class :class:`rinterface.SexpSymbol` to represent R symbols
+
+Bugs fixed
+----------
+
+- :meth:`rpy2.rinterface.Sexp.do_slot` was crashing when
+  the parameter was an empty string (PR #155)
+
+
+
+Release 2.3.10
+==============
+
+Bugs fixed
+----------
+
+- `setup.py build` was broken when new R compiled with OpenMP (Issue #183)
+
+Release 2.3.9
+=============
+
+- Changes in pandas 0.13.0 broke the rpy2 conversion layer (Issue #173)
+
+
+Release 2.3.8
+=============
+
+Bugs fixed
+----------
+
+- Crash with R-3.0.2. Changes in R-3.0.2's C API coupled to a strange behaviour
+  with R promises caused the problem. (PR #150)
+
+
+Release 2.3.7
+=============
+
+Bugs fixed
+----------
+
+- ggplot2's "guides" were missing
+
+- ggplot2's "theme_classic" was missing (PR #143)
+
+- ggplot2's "element_rect" was missing (PR #144)
+
+- :func:`rpy2.interactive.packages` was broken (PR #142)
+
+
+Release 2.3.6
+=============
+
+Bugs fixed
+----------
+
+- Several reports of segfault on OS X (since rpy2-2.3.1 - PR #109)
+
+- More fixes in converting `DataFrames` with dates from `pandas`
+
+
+Relase 2.3.5
+============
+
+Bugs fixed
+----------
+
+- Missing mapping to ggplot2's `scale_shape_discrete` function
+
+- Better handling of dates in Pandas
+
+- Constructor for POSIXct improved (and fixed)
+
+Changes
+-------
+
+- The attribute :attr:`rclass` is no longer read-only and can be set
+  (since R allows it)
+
+- Importing the module :mod:`rpy2.interactive` no longer activates
+  event processing by default (triggering concurrency errors
+  when used with ipython).
+
+New features
+------------
+
+- New module :mod:`rpy2.interactive.ipython` (so far plotting
+  automatically a ggplot2 figure in the iPython's console)
+
+- It is now possible to set the :attr:`rclass`.
+
+
+Relase 2.3.4
+============
+
+Bugs fixed
+----------
+
+- Spurious error when running unit tests with Python 3 and numpy
+  installed
+
+- Missing mapping to ggplot2's `geom_dotplot` function
+
+- Warnings are not longer printed (see Changes below)
+
+Changes
+-------
+
+- Bumped target version of ggplot2 to 0.9.3.1
+
+- Warnings are not longer printed. The C-level function in R became
+  hidden in R-3.0, and the cost of an R-level check/print is relatively
+  high if the R code called is very short. This might evolve into
+  printing warnings only if interactive mode in Python (if this can
+  be checked reliably).
+
+
+Release 2.3.3
+=============
+
+Bugs fixed
+----------
+
+- Some of the data.frames converted from :mod:`pandas` were triggering
+  a :class:`TypeError` when calling :func:`repr`
+
+- In :mod:`rpy2.robjects.lib.ggplot2`, a mapping to `coord_fixed` was
+  missing (PR #120)
+
+- Using the parameter `lib_loc` in a call to
+  :func:`rpy2.robjects.packages.importr` was resulting in an error (PR #119)
+
+- Creating a `layer` through the `rpy2.robjects.lib.ggplot2` interface did
+  not accept parameters (PR #122)
+
+- Testing the Python version was crashing of a number of unsupported Python
+  versions (<= 2.6) (PR #117)
+
+New features
+------------
+
+- New module pandas2ri to convert from mod:`pandas` `DataFrame` objects
+
+- New classes :class:`rpy2.robjects.lib.grid.Unit` and
+  :class:`rpy2.robjects.lib.grid.Gpar` to model their counterparts in
+  R's `grid` package as they were previously missing from rpy2.
+
+
+Release 2.3.2
+=============
+
+Bug fixed
+---------
+
+- Building on Win64 (pull request #6)
+
+- Fetching data from an R package through `importr` was masking
+  any R object called `data` in that package. The data are now
+  under the attribute name `__rdata__`. This is not completely
+  safe either, although much less likely, a warning will
+  be issued if still masking anything.
+  
+
+Changes
+-------
+
+- More informative error message when failing to build because `R CMD config`
+  does not return what is expected
+
+Release 2.3.1
+=============
+
+Bugs fixed
+----------
+
+- default console print callback with Python (issue #112 linked to it)
+
+- deprecation warnings with ggplot2 (issue #111 and contributed patch)
+
+
+
+Release 2.3.0
+=============
+
+New Features
+------------
+
+:mod:`rpy2.rinterface`:
+
+- C-level API, allowing other C-level modules to make use of utilities
+  without going through the Python level. The exact definition of
+  the API is not yet fixed. For now there is 
+  PyRinteractive_IsInitialized() to assess whether R was initialized
+  (through :mod:`rpy2.rinterface` or not).
+
+- C-module _rpy_device, allowing one to implement R graphical devices
+  in Python [(very) experimental]
+
+- Tracking of R objects kept protected from garbage collection by rpy2
+  is now possible.
+
+- New method :meth:`Sexp.rid` to return the identifier of the R object
+  represented by a Python/rpy2 object
+
+:mod:`rpy2.rinteractive`:
+
+- Dynamic build of Python docstrings out of the R manual pages
+
+:mod:`rpy2.robjects.help`:
+
+- Build dynamic help
+
+:mod:`rpy2.robjects.packages`:
+
+- Build anonymous R packages from strings
+
+- When using :func:`importr`, the datasets are added as an attribute
+  :attr:`data`, itself an instance of a new class :class:`PackageData`.
+  It no longer possible to access datasets are regular objects from
+  a code package (because of changes in R), and the new system is
+  more robust against quirks.
+
+Changes
+-------
+
+:mod:`rpy2.rinterface`:
+
+- :attr:`SexpClosure.env` to replace the method `closureenv`.
+
+
+Release 2.2.6
+=============
+
+Bugs fixed
+----------
+ 
+- Newest R-2.15 and ggplot2 0.9 broke the ggplot2 interaface 
+  in :mod:`rpy2.robjects.lib.ggplot2`
+
+
+Release 2.2.5
+=============
+
+Bugs fixed
+----------
+
+- install process: Library location for some of the R installations
+
+- should compile on win32 (thanks to a patch from Evgeny Cherkashin),
+   a work to a limited extend
+
+
+Release 2.2.4
+=============
+
+Bugs fixed
+----------
+
+- Memory leak when creating R vectors from Python (issue #82)
+
+Release 2.2.3
+=============
+
+Bugs fixed
+----------
+
+- Dynamic construction of S4 classes was looking for R help as 'class.<class>'
+  rather than '<class>-class'
+
+- The cleanup of temporary directories created by R was not happening if
+  the Python process terminated without calline :func:`rpy2.rinterface.endr()`
+  (issue #68, and proof-of-principle fix by chrish42)
+
+
+Release 2.2.2
+=============
+
+Bugs fixed
+----------
+
+- With the robjects layer, repr() on a list containing non-vector elements
+  was failing
+
+Release 2.2.1
+=============
+
+Bugs fixed
+----------
+
+- MANIFEST.in was missing from MANIFEST.in, required with Python 3
+
+
+Release 2.2.0
+=============
+
+New Features
+------------
+
+- Support for Python 3, and for some of its features ported to Python 2.7
+
+:mod:`rpy2.robjects`:
+
+- :meth:`Environment.keys` to list the keys
+
+- classes :class:`robjects.vectors.POSIXlt` and 
+  :class:`robjects.vectors.POSIXlt` to represent vectors of R
+  dates/time
+
+- :func:`packages.get_packagepath` to get the path to an R package
+
+- module :mod:`rpy2.robjects.help` to expose the R help system to Python
+
+- Metaclass utilities in :mod:`rpy2.robjects.methods`, allowing to reflect
+  automatically R S4 classes as Python classes.
+
+- :meth:`rpy2.robjects.vectors.FactorVector.iter_labels` to iterate over the labels
+
+- :class:`rpy2.robjects.vectors.ListVector` to represent R lists.
+
+- Constructor for :class:`rpy2.robjects.vectors.ListVector` and 
+  :class:`rpy2.robjects.vectors.DataFrame` accept any iterable at the condition
+  that the elements iterated through also valid subscripts for it (e.g., given
+  an iterable v, the following is valid:
+
+  .. code-block:: python
+
+     x[k] for x in v
+
+
+:mod:`rpy2.rinterface`:
+
+- :data:`NA_Complex` and :class:`NAComplexType` for missing complex values.
+
+- :class:`SexpExtPtr` to represent R objects of type EXTPTR (external pointers).
+
+- :func:`rpy2.rinterface.parse` to parse a string a R code
+
+- :func:`rpy2.rinterface.rternalise` to wrap Python function as :class:`SexpClosure` that can
+  be called by R just as it was a function of its own.
+
+- :class:`rpy2.rinterface.RNULLType` for R's C-level NULL value and 
+  :class:`rpy2.rinterface.UnboundValueType` for R's C-level R_UnboundValue
+  (both singletons).
+
+- :meth:`rinterface.SexpVector.index`, of similar behaviour to :meth:`list.index`.
+
+- :meth:`rpy2.rinterface.Sexp.list_attrs` to list the names of all R attributes
+  for a given object.
+
+- :class:`rpy2.rinterface.ByteSexpVector` to represent R 'raw' vectors.
+
+- constant `R_LEN_T_MAX` to store what is the maximum length for a vector in R.
+
+- tuple `R_VERSION_BUILD` to store the version of R rpy2 was built against
+
+- getter :attr:`Sexp.rclass` to return the R class associated with an object 
+
+:mod:`rpy2.rlike`:
+
+- :class:`container.OrdDict` get proper methods :meth:`keys` and `get`
+
+:mod:`rpy2.interactive`:
+
+- A new sub-package to provide utilities for interactive work, either for
+  handling R interactive events or use Python for interactive programming
+  (as often done with the R console)
+
+Changes
+-------
+
+:mod:`rpy2.robjects`:
+
+- NA_bool, NA_real, NA_integer, NA_character and NA_complex are now
+  deprecated (and removed).
+  NA_Logical, NA_Real, NA_Integer, NA_Character, NA_Complex should be used.
+
+- :class:`rpy2.robjects.packages.Package` now inherits from :class:`types.ModuleType`
+
+- classes representing R vector also inherit their type-specific
+  rinterface-level counterpart.
+
+- Importing the :class:`rpy2.robjects.numpy2ri` is no longer sufficient
+  to active the conversion. Explicit activation is now needed; the function
+  `activate` can do that.
+
+
+:mod:`rpy2.rinterface`:
+
+- :class:`IntSexpVector`, :class:`FloatSexpVector`,
+  :class:`StrSexpVector`, :class:`BoolSexpVector`, :class:`ComplexSexpVector`
+  are now defined at the C level, improving performances
+  and memory footprint whenever a lot of instances are created.
+
+Bugs fixed
+----------
+
+- Better and more explicit detection system for needed libraries when
+  compiling rpy2 (ported to release 2.1.6)
+
+- Long-standing issue with readline fixed (issue #10)
+
+
+Release 2.1.9
+=============
+
+Bugs fixed
+----------
+
+- The R class in rpy2.robjects is now truly a singleton
+
+- When using numpy 1.5 and Python >= 2.7, the exposed buffer for R numerical (double)
+  vectors or arrays was wrong.
+
+
+Release 2.1.8
+=============
+
+Bugs fixed
+----------
+
+- Fixed issue with R arrays with more than 2 dimensions and numpy arrays
+  (issue #47 - backported from the branch 2.2.x).
+
+
+Release 2.1.7
+=============
+
+Bugs fixed
+----------
+
+- More fixes for the automated detection of include and libraries at build time.
+
+
+Release 2.1.6
+=============
+
+Bugs fixed
+----------
+
+- Further fixes in the automatic detection of includes and libraries
+  needed to compile rpy2 against R. The detection code has
+  been refactored (backport from the 2.2.x branch)
+
+
+Release 2.1.5
+=============
+
+Bugs fixed
+----------
+
+- fixes the automatic detection of R_HOME/lib during building/compiling
+  when R_HOME/lib is not in lib/ (issue #54)
+
+
+Release 2.1.4
+=============
+
+New features
+------------
+
+- :mod:`rpy2.robjects.lib.ggplot2` now has the functions :func:`limits`,
+  :func:`xlim`, :func:`ylim` exposed (patch contributed anonymously)
+
+Bugs fixed
+----------
+
+- Install script when the BLAS library used by R is specified as a library
+  file (patch by Michael Kuhn)
+
+
+Release 2.1.3
+=============
+
+Bugs fixed
+----------
+
+- Spurious error message when using DataFrame.from_csvfile() without
+  specifying col_names  or row_names
+
+- Patch to finally compile with Python < 2.6 (contribDuted by Denis Barbier)
+
+
+Release 2.1.2
+=============
+
+New Features
+------------
+
+:mod:`rpy2.robjects`:
+
+- NA_Logical, NA_Real, NA_Integer, NA_Character from :mod:`rpy2.rinterface` 
+  are imported by robjects.
+
+Changes
+-------
+
+:mod:`rpy2.robjects`:
+
+- NA_bool, NA_real, NA_integer, NA_character and NA_complex are now
+  robjects-level vectors
+  (they were rinterface-level vectors).
+  Consider using the rinterface-defined NAs instead of them.
+
+Bugs fixed
+----------
+
+- Missing conditional C definition to compile with Python 2.4 # issue 38
+
+- Fixed error when calling robjects.vectors.Vector.iteritems() on an R 
+  vector without names
+
+- Fixed automatic conversion issues (issue #41)
+
+
+Release 2.1.1
+=============
+
+Bugs fixed
+----------
+
+- Issues with NA values # issue 37
+
+- Missing manual scale functions in :mod:`rpy2.robjects.lib.ggplot2` # issue 39
+
+
+Release 2.1.0
+=============
+
+New Features
+------------
+
+:mod:`rpy2.robjects`:
+
+- Method :meth:`formals` for :class:`Function` (formerly *RFunction*)
+
+- Methods :meth:`slotnames`, :meth:`isclass`, and :meth:`validobject`
+  for :class:`RS4`
+
+- Vector-like objects now in a module :mod:`rpy2.robjects.vectors`
+
+- :func:`set_accessors` for adding simply accessors to a class inheriting
+  from :class:`RS4`
+
+- :class:`RS4_Type` for metaclass-declared accessors
+
+- Delegating classes :class:`ExtractDelegator` and 
+  :class:`DoubleExtractDelegator` for extracting the R-way
+
+- :class:`DataFrame` (formerly *RDataFrame*) can now be created 
+  from :`rlike.container.OrdDict`
+  instances, or any other object inheriting from dict.
+
+- :class:`FactorVector` to represent R factors
+
+- the conversion is now returning subclasses of
+  :class:`robjects.vectors.Vector` -formerly *RVector*-
+  (such as :class:`IntVector`, 
+  :class:`FloatVector`, etc...) rather than only return :class:`Vector`
+
+- :class:`StrVector` has a method :meth:`factor` to turn a
+  vector of strings into an R factor
+
+- :class:`Matrix` was added the methods: :meth:`dot`, :meth:`svd`, :meth:`crossprod`,
+  :meth:`tcrossprod`, :meth:`transpose`.
+ 
+- :meth:`IntVector.tabulate` to count the number of times a value is found in the vector
+
+- :meth:`Vector.sample` to draw a (random) sample of arbitrary size from a vector
+
+- :data:`NA_Bool`, :data:`NA_Real`, :data:`NA_Integer`, :data:`NA_Character`, 
+  :data:`NA_Complex` as aliases for R's missing values.
+
+- :data:`ComplexVector` for vectors of complex (real + imaginary) elements
+
+- :mod:`packages` to provide utility functions to handle R packages
+  (import of R packages)
+
+- :mod:`functions` to provide classes related to R functions, with the new 
+  class :class:`SignatureTranslatedFunction`
+
+- :meth:`DataFrame.iter_row` and :meth:`DataFrame.iter_column`, iterating
+  through rows and columns respectively.
+
+- :meth:`DataFrame.cbind` and :meth:`DataFrame.rbind` for binding columns or
+  rows to a DataFrame.
+
+- :meth:`Vector.iteritems` to iterate on pairs of names and values.
+
+- :attr:`Robject.__rname__` to store the "R name"
+
+:mod:`rpy2.rinterface`:
+
+- New functions for specifying callback functions for R's front-ends:
+  :func:`set_showmessage`, :func:`set_flushconsole`,
+  :func:`set_choosefile`, :func:`set_showfiles`
+
+- New object :data:`MissingArg`, exposing R's special object for representing
+  a "missing" parameter in a function call.
+  (#this was first a patch by Nathaniel Smith with a function getMissingArgSexp)
+
+- Initial commit of a callback-based implementation of an R graphical device
+  (this is for the moment very experimental - and not fully working)
+
+- :meth:`SexpClosure.rcall` is now taking 2 parameters, 
+  a tuple with the parameters and
+  an :class:`SexpEnvironment` in which the call is to be evaluated.
+
+- :attr:`Sexp.__sexp__` now has a setter method. This permits the rebinding
+  of the underlying R SEXP, and allows to expose `foo<-` type of R methods
+  as Python function/methods with side effects.
+
+- Objects of R type RAWSXP are now exposed as instances of class
+  :class:`SexpVector`.
+
+- Factory function :func:`unserialize` to build Sexp* instances from byte
+  string serialized with R's own 'serialize'.
+
+- Method :meth:`Sexp.__reduce__` for pickling/unpickling
+
+- Ability to specify a callback function for R_CleanUp (called upon exiting R)
+  through :func:`get_cleanup` and :func:`set_cleanup` [very experimental]
+
+- Class :class:`ListSexpVector` for creating R lists easily
+  (complementing :class:`IntSexpVector`, :class:`StrSexpVector`, and friends) 
+
+- :meth:`colnames`, :meth:`rownames` for :class:`Array` (formerly *RArray*) are now 
+  property-style getters
+
+- Pairlists (LISTSXP) now handled
+
+- Experimental function :func:`set_interactive` to set whether R is in interactive
+  mode or not (#following an issue reported by Yaroslav Halchenko)
+
+- New object :data:`R_NilValue`, exposing R's special object for representing
+  a "NULL".
+
+- :data:`ComplexSexpVector` for vectors of complex (real + imaginary) elements
+
+- Scalar Python parameters of type :class:`int`, :class:`long`,
+  :class:`double`, :class:`bool`, and :class:`None` 
+  in a call (using :class:`SexpClosure`) are now automatically converted
+  to length-one R vectors (at the exception of None, converted
+  to R_NilValue).
+
+- Python slices can now be used on R vector-like objects 
+
+- Better handling of R's missing values NA, `NA_integer_`, `NA_real_`, 
+  and `NA_character_`.
+
+:mod:`rpy2.rlike`:
+
+- :meth:`iteritems` for :class:`OrdDict` (formerly:class:`ArgDict`) 
+  and :class:`TaggedList`
+
+- static method :meth:`from_iteritems` for :class:`TaggedList`,
+  for creating a TaggedList from any object having a method :meth:`iteritems`
+
+
+Changes
+-------
+
+- The setup.py script is now taking command-line arguments when specifying
+  R library-related paths are wished. python setup.py --help build_ext will
+  list them
+  
+:mod:`rpy2.robjects`:
+
+- RS4 no longer makes R's slots as Python attributes through :meth:`__attr__`
+
+- The package is split into modules
+
+- The broken variables NA_STRING, NA_INTEGER, NA_LOGICAL, and NA_REAL are
+  removed. The documentation on missing values was revised.
+
+- :data:`globalEnv` and :data:`baseNameSpaceEnv` were renamed to 
+  :data:`globalenv` and :data:`baseenv` respectively
+
+- The parameter *wantFun* in :meth:`Environment.get` 
+  (formerly *REnvironment.get()*) is now *wantfun* 
+
+- :attr:`Vector.r` does not have a __getitem__ method any longer
+  (see in `.rx` and `.rx2` in the new features)
+
+- :meth:`colnames`, :meth:`rownames`, :meth:`nrow`, :meth:`ncol` 
+  for :class:`DataFrame` are now property-style getters
+
+- :meth:`nrow`, :meth:`ncol` for :class:`Array` 
+  are now property-style getters
+
+- static method :meth:`from_csvfile` and 
+  instance method :meth:`to_csvfile` for :class:`DataFrame`
+
+- module :mod:`lib` to store modules representing R packages
+
+- module :mod:`lib.ggplot2` for the CRAN package ggplot2.
+
+- renaming of few classes, the *R* prefix: :class:`Formula` (from *RFormula*),
+  :class:`DataFrame` (from *RDataFrame*), :class:`Array` (from *RArray*),
+  :class:`Matrix` (from *RMatrix*), :class:`Environment` (from *REnvironment*),
+  :class:`Function` (from *RFunction*), :class:`Vector` (from *RVector*).
+
+- :class:`robjects.vectors.Vector` lost the (now redundant) methods
+  `subset` and `assign`. Those operations were just aliases to the 
+  :class:`ExtractDelegator`
+
+:mod:`rpy2.rinterface`:
+
+- :data:`globalEnv`, :data:`baseNameSpaceEnv`, and :data:`emptyEnv` 
+  were renamed to :data:`globalenv`, :data:`baseenv` and :data:`emptyenv`
+  respectively
+
+- The parameter *wantFun* in :meth:`SexpEnvironment.get` is now *wantfun* 
+
+- The call-back getters and setters are now :func:`get_readconsole`,
+  :func:`set_readconsole`, :func:`get_writeconsole`, :func:`set_writeconsole`,
+  :func:`get_flushconsole`, and :func:`set_flushconsole`.
+
+- Functions also accept named parameters equal to Py_None, and transform them to R
+  NULL (previously only accepted parameters inheriting from Sexp).
+
+:mod:`rpy2.rlike`:
+
+- :class:`ArgDict` becomes :class:`OrdDict`.
+
+- :meth:`tags` of :class:`TaggedList` is now a property (with a getter
+  and a setter)
+
+:mod:`rpy2.rpy_classic`:
+
+- R named lists are returned as Python :class:`dict`, like rpy-1.x does it, with the
+  notable difference that duplicate names are not silently overwritten: an exception
+  of class :class:`ValueError` is thrown whenever happening
+
+
+Bugs fixed
+----------
+
+- :meth:`REnvironment.get` now accepts a named parameter *wantFun*
+  (like :meth:`rinterface.SexpEnvironment` does)
+
+- :class:`rinterface.SexpVector` will now properly raise an exception
+  when trying to create vector-like object of impossible type
+
+- Crash when trying to create a SexpVector of a non-vector type
+
+- R objects of class *matrix* are now properly converted into :class:`RMatrix`
+  (instead of :class:`Array`)
+
+- :meth:`Robj.as_py` was not working at all (and now it does to some extent)
+
+
+Release 2.0.7
+=============
+
+Bugs fixed
+----------
+
+- On win32, printing an object was leaving an open file handle behind each time,
+  leading to an error and the impossibility to print
+  (# bug report and fix by Christopher Gutierrez)
+
+
+Release 2.0.6
+=============
+
+No user-visible change. Win32-specific additions to the C module
+were made to compile it.
+
+
+Release 2.0.5
+=============
+
+Bugs fixed
+----------
+
+- Crash when calling :meth:`SexpEnvironment.get` with an empty string
+  #bug report by Walter Moreira
+
+- :meth:`SexpEnvironment.__getitem__` called with an empty string
+  caused unpredictable (and bad) things
+
+
+Release 2.0.4
+=============
+
+Bugs fixed
+----------
+
+- Added missing named parameter *wantfun* to method :meth:`REnvironment.get`
+  (making it similar to :meth:`SexpEnvironment.get`)
+
+- Leak in reference counting when creating SexpVector objects fixed
+  (the symptom was a process growing in size when creating R vector from
+  Python list or numpy arrays)
+
+- `R CMD config LAPACK_LIBS` could return an empty string when R was compiled
+  with the veclib framework, causing the setup.py script to raise an exception.
+  setup.py now only print a message about an empty string returned from 
+  R CMD config
+
+- Numpy arrays with complex elements are no longer causing segfaults
+
+- Calls to :meth:`SexpClosure.rcall` with something else that the expected
+  kind of tuple could cause a segfault
+
+
+Release 2.0.3
+=============
+
+New Features
+------------
+
+:mod:`rpy2.rinterface`:
+
+- :meth:`process_revents`, a Wrapper for R_ProcessEvents 
+  (# suggested by June Kim to help with issues related to interactive display on win32),
+  and for R_RunHandlers on UNIX-like systems 
+  (# patch by Nathaniel Smith).
+
+- All callbacks are getting a get<callback> to complement the set<callback>.
+  (# Patch by Nathaniel Smith) 
+
+- :meth:`Sexp.__deepcopy__` to copy an object (calling Rf_Duplicate) 
+   (# from a patch by Nathaniel Smith)
+ 
+Changes
+-------
+ 
+- the default for reading and writing the console are now using sys.stdin and sys.stdout 
+  (# patch submitted by Nathaniel Smith)
+ 
+- console IO callbacks (reading and writing) are complemented by 
+  one to flush the console
+
+- :meth:`Sexp.do_slot_assign` now creates the slot if missing
+  (design-fix - # patch by Nathaniel Smith)
+ 
+
+Bugs fixed
+----------
+ 
+- fixed problem of numpy interface with R boolean vectors. 
+  They are now presented as 'i' rather than 'b' to numpy
+  (# patch submitted by Nathaniel Smith)
+ 
+- The mechanism for setting arbitrary callaback functions for console I/O 
+  now ensures that a traceback is printed to stderr whenever an error
+  occurs during the evalutation of the callback (the raised exception used
+  to be silently propagated to the next python call, leading to problems).
+
+
+
+Release 2.0.2
+=============
+
+Bugs fixed
+----------
+
+- Fix installation bug when the include directories contain either '-' or 'I'
+  #spotted by James Yoo
+
+- Failing to initialize R now throws a RuntimeError
+
+- Copying an R "NA" into Python returns a None (and no longer a True)
+  (#fixes a bug reported by Jeff Gentry)
+
+
+Release 2.0.1
+=============
+
+New features
+------------
+
+:mod:`rpy2.robjects`:
+
+- Property `names` for the :class:`RVector` methods :meth:`getnames` 
+  and :meth:`setnames` (this was likely forgotten for Release 2.0.0).
+
+- Property `rclass` for :class:`RObjectMixin` 
+
+Changes
+-------
+
+:mod:`rpy2.robjects`:
+
+- :meth:`rclass` becomes :meth:`getrclass`
+
+Bugs fixed
+----------
+
+- Having the environment variable R_HOME specified resulted in an error
+  when importing :mod:`rpy2.rinterface` # root of the problem spotted by Peter
+
+- Setup.py has no longer a (possibly outdated) static hardcoded version number
+  for rpy2
+
+- Testing no longer stops with an error in the absence of the third-party
+  module :mod:`numpy`
+
+- :meth:`rpy2.rlike.container.TaggedList.pop` is now returning the element
+  matching the given index
+
+
+
+Release 2.0.0
+=============
+
+New features
+------------
+
+- New module :mod:`rpy2.robjects.conversion`.
+
+- New module :mod:`rpy2.robjects.numpy2ri` to convert :mod:`numpy` objects
+  into :mod:`rpy2` objects. 
+  # adapted from a patch contributed by Nathaniel Smith
+
+
+Changes
+-------
+
+- :meth:`RObject.__repr__` moved to :meth:`RObject.r_repr`
+
+
+Bugs fixed
+----------
+
+- Informative message returned as RuntimeError when failing to find R's HOME
+
+- Use the registry to find the R's HOME on win32
+  # snatched from Peter's earlier contribution to rpy-1.x
+
+
+Release 2.0.0rc1
+================
+
+:mod:`rpy2.rpy_classic`:
+
+- :meth:`rpy_classic.RObj.getSexp` moved to a 
+  property :attr:`rpy_classic.Robj.sexp`.
+
+:mod:`rpy2.robjects`:
+
+- :meth:`RObject.__repr__` moved to :meth:`RObject.r_repr`
+
+- :meth:`ri2py`, :meth:`ro2py`, and :meth:`py2ri` moved to the new module
+  :mod:`conversion`. Adding the prefix `conversion.` to calls
+  to those functions will be enough to update existing code
+
+
+Bugs fixed
+----------
+
+- Informative message returned as RuntimeError when failing to find R's HOME
+
+- Use the registry to find the R's HOME on win32
+  # snatched from Peter's earlier contribution to rpy-1.x
+
+
+Release 2.0.0rc1
+================
+
+New features
+------------
+
+- added :data:`__version__` to rpy2/__init__.py
+
+:mod:`rpy2.robjects`:
+
+- added classes :class:`StrVector`, :class:`IntVector`, :class:`FloatVector`, :class:`BoolVector`
+
+:mod:`rpy2.rinterface`:
+
+- added missing class :class:`BoolSexpVector`.
+
+
+Changes
+-------
+
+:mod:`rpy2.robjects`:
+
+- does not alias :class:`rinterface.StrSexpVector`, :class:`rinterface.IntSexpVector`, :class:`rinterface.FloatSexpVector` anymore
+
+- Constructor for :class:`rpy2.robjects.RDataFrame` checks that R lists are data.frames (not all lists are data.frame)
+
+- Formerly new attribute :attr:`_dotter` for :class:`R` is now gone. The documentaion now points to :mod:`rpy2.rpy_classic` for this sort of things.
+
+Bugs fixed
+----------
+
+- conditional typedef in rinterface.c to compile under win32 # reported and initial proposed fix from Paul Harrington
+
+- __pow__ was missing from the delegator object for robjects.RVector (while the documentation was claiming it was there) # bug report by Robert Nuske
+
+- Earlier change from Sexp.typeof() to getter Sexp.typeof was not reflected in :mod:`rpy2.rpy_classic` # bug report by Robert Denham
+
+ 
+Release 2.0.0b1
+===============
+
+New features
+------------
+
+:mod:`rpy2.robjects`:
+
+- added :meth:`setenvironment` for :class:`RFormula`, and defined `environment` as a property
+
+- defined `names` as a property for :class:`RVector`
+
+:mod:`rpy2.rinterface`:
+
+- added functions :func:`get_initoptions` and :func:`set_initoptions`.
+
+- new attribute :attr:`_dotter` for :class:`R` singleton. Setting it to True will translate '_' into '.' if the attribute is not found 
+
+Changes
+-------
+
+:mod:`rpy2.robjects`:
+
+- constructor for RDataFrame now now accepts either :class:`rlike.container.TaggedList` or :class:`rinterface.SexpVector`
+
+:mod:`rpy2.rinterface`:
+
+- :func:`sexpTypeEmbeddedR` is now called :func:`str_typeint`.
+
+- :attr:`initOptions` is now called :attr:`initoptions`. Changes of options can only be done through :func:`set_initoptions`.
+
+
+Bugs fixed
+----------
+
+- crash of :meth:`Sexp.enclos` when R not yet initialized (bug report #2078176)
+
+- potential crash of :meth:`Sexp.frame` when R not yet initialized
+
+- proper reference counting when handling, and deleting, :attr:`Sexp.__sexp__` generated CObjects
+
+- setup.py: get properly the include directories (no matter where they are) #bug report and fix adapted from Robert Nuske
+
+- setup.py: link to external lapack or blas library when relevant
+
+- added a MANIFEST.in ensuring that headers get included in the source distribution #missing headers reported by Nicholas Lewin-Koh
+
+- :func:`rinterface.str_typeint` was causing segfault when called with 99
+
+- fixed subsetting for LANGSXP objects
+
+
+Release 2.0.0a3
+===============
+
+New features
+------------
+
+:mod:`rpy2.rinterface`:
+
+- :func:`setReadConsole`: specify Python callback for console input
+
+- `R` string vectors can now be built from Python unicode objects
+
+- getter :attr:`__sexp__` to return an opaque C pointer to the underlying R object
+
+- method :meth:`rsame` to test if the underlying R objects for two :class:`Sexp` are the same.
+
+- added `emptyEnv` (R's C-level `R_EmptyEnv`)
+
+- added method :meth:`Sexp.do_slot_assign`
+
+:mod:`rpy2.robjects`:
+
+- R string vectors can now be built from Python unicode objects
+
+:mod:`rpy2.rlike`:
+
+- module :mod:`functional` with the functions :func:`tapply`, :func:`listify`, :func:`iterify`.
+
+- module :mod:`indexing` with the function :func:`order`
+
+- method :meth:`TaggedList.sort` now implemented
+
+ 
+Changes
+-------
+
+:mod:`rpy2.rinterface`:
+
+- :func:`initEmbeddedR` is only initializing if R is not started (no effect otherwise, and no exception thrown anymore)
+
+- the method :meth:`Sexp.typeof` was replaced by a Python `getter` :attr:`typeof`.
+
+- the method :meth:`Sexp.named` was replaced by a Python `getter` :attr:`named`.
+
+- R objects of type LANGSXP are now one kind of vector (... but this may change again)
+
+- R objects of type EXPRSXP are now handled as vectors (... but this may change again)
+
+- :func:`initEmbeddedR` renamed to :func:`initr`
+
+- :func:`endEmbeddedR` renamed to :func:`endr`
+
+
+:mod:`rpy2.robjects`:
+
+- :class:`R` remains a singleton, but does not throw an exception when multiple instances are requested
+
+
+Bugs fixed
+----------
+
+- unable to compile on Python2.4 (definition of aliases to Python2.5-specific were not where they should be).
+
+- overflow issues on Python 2.4/64 bits when indexing R vector with very large integers.
+
+- handling of negative indexes for :class:`SexpVector`'s :meth:`__getitem__` and :meth:`__setitem__` was missing
+
+- trying to create an instance of :class:`SexpVector` before initializing R raises a RuntimeException (used to segfault)
+
+- experimental method :meth:`enclos` was not properly exported
+
+- setup.py was exiting prematurely when R was compiled against an existing BLAS library
+
+- complex vectors should now be handled properly by :mod:`rpy2.rinterface.robjects`.
+
+- methods :meth:`rownames` and :meth:`colnames` for :class:`RDataFrame` were incorrect.
+
+Release 2.0.0a2
+===============
+
+New features
+------------
+
+:mod:`rpy2.rlike`:
+
+- package for R-like features in Python
+
+- module :mod:`rpy2.rlike.container` 
+
+- class :class:`ArgsDict` in :mod:`rpy2.rlike.container`
+
+- class :class:`TaggedList` in :mod:`rpy2.rlike.container`
+
+:mod:`rpy2.rinterface`:
+
+- method :meth:`named`, corresponding to R's C-level NAMED
+
+- experimental methods :meth:`frame` and :meth:`enclos` for SexpEnvironment corresponding to R's C-level FRAME and ENCLOS
+
+- method :meth:`rcall` for :class:`ClosureSexp`
+
+- new experimental class :class:`SexpLang` for R language objects.
+
+
+Bugs fixed
+----------
+
+- R stack checking is disabled (no longer crashes when multithreading)
+
+- fixed missing R_PreserveObject for vectors (causing R part of the object to sometimes vanish during garbage collection)
+
+- prevents calling an R function when R has been ended (raise :class:`RuntimeException`).
+
+
+Release 2.0.0a1
+===============
+
+New features
+------------
+
+:mod:`rpy2.robjects`:
+
+- method :meth:`getnames` for :class:`RVector`
+
+- experimental methods :meth:`__setitem__` and :meth:`setnames` for :class:`RVector`
+
+- method 'getnames' for :class:`RArray`
+
+- new class :class:`RFormula`
+
+- new helper class :class:`RVectorDelegator` (see below)
+
+- indexing RVector the "R way" with subset is now possible through a delegating attribute (e.g., myvec.r[True] rather than myvec.subset(True)). #suggested by Michael Sorich
+
+- new class :class:`RDataFrame`. The constructor :meth:`__init__` is still experimental (need for an ordered dictionnary, that will be in before the beta
+
+- filled documentation about mapping between objects
+
+Changes
+-------
+
+- many fixes and additions to the documentation
+
+- improved GTK console in the demos
+
+- changed the major version number to 2 in order to avoid confusion with rpy 1.x # Suggested by Peter and Gregory Warnes
+
+- moved test.py to demos/example01.py
+
+:mod:`rpy2.robjects`:
+
+- changed method name `getNames` to `getnames` where available (all lower-case names for methods seems to be the accepted norm in Python).
+
+
+Bugs fixed
+----------
+
+:mod:`rpy2.robjects`:
+
+- fixed string representation of R object on Microsoft Windows (using fifo, not available on win32)
+
+- :meth:`__getattr__` for :class:`RS4` is now using :meth:`ri2py` 
+
+:mod:`rpy2.rinterface`:
+
+- fixed context of evaluation for R functions (now R_GlobalEnv)
+
+Release 1.0a0
+=============
+
+- first public release

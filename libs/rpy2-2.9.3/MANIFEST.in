@@ -1,0 +1,60 @@
+global-include README
+global-exclude *patch* *diff* .hg
+
+include MANIFEST MANIFEST.in
+include NEWS README AUTHORS
+include gpl-2.0.txt
+
+
+include rpy/rinterface/_rinterface.h
+include rpy/rinterface/_rinterface.c
+
+include rpy/rinterface/sexp.c
+include rpy/rinterface/sexp.h
+
+include rpy/rinterface/array.c
+include rpy/rinterface/array.h
+
+include rpy/rinterface/buffer.c
+include rpy/rinterface/buffer.h
+
+include rpy/rinterface/sequence.c
+include rpy/rinterface/sequence.h
+
+include rpy/rinterface/na_values.c
+include rpy/rinterface/na_values.h
+
+include rpy/rinterface/null_value.c
+include rpy/rinterface/null_value.h
+
+include rpy/rinterface/embeddedr.c
+include rpy/rinterface/embeddedr.h
+
+include rpy/rinterface/r_utils.c
+include rpy/rinterface/r_utils.h
+
+include rpy/rinterface/_rpy_device.c
+include rpy/rinterface/rpy_device.h
+
+include rpy/rinterface/rexternalptr.c
+include rpy/rinterface/rexternalptr.h
+
+include rpy/rinterface/*.py
+include rpy/rinterface/tests/*.py
+
+
+include rpy/__init__.py
+include rpy/tests.py
+include rpy/rpy_classic.py
+include rpy/tests_rpy_classic.py
+include rpy/situation.py
+recursive-include rpy/robjects *.py
+recursive-include rpy/ipython *.py
+recursive-include rpy/interactive *.py
+recursive-include rpy/rlike *.py
+
+prune dist
+
+include doc/Makefile
+include doc/source/rpy2_logo.png
+
