@@ -1,0 +1,24 @@
+version: '3'
+services:
+  jupyter:
+    build: .
+    image: '${PROJECT_NAME}'
+    container_name: '${PROJECT_NAME}_jupyter'
+    env_file:
+      - .env
+    command: bash -c "jupyter notebook --allow-root --NotebookApp.password='' --NotebookApp.token='' --NotebookApp.disable_check_xsrf='True'"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./datasets:/home/jovyan/datasets
+      - ./requirements.txt:/home/jovyan/requirements.txt
+    ports:
+      - "8888:8888"
+
+  tensorboard:
+    image: '${PROJECT_NAME}'
+    container_name: '${PROJECT_NAME}_tensorboard'
+    command: bash -c "tensorboard --host 0.0.0.0 --logdir=/home/jovian/tensorboard/ "
+    volumes:
+      - ./tensorboard:/home/jovyan/tensorboard
+    ports:
+      - "6006:6006"
