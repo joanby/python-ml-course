@@ -10,6 +10,7 @@ services:
     volumes:
       - ./notebooks:/home/jovyan/work
       - ./datasets:/home/jovyan/datasets
+      - ./cheatsheets:/home/jovyan/cheatsheets
       - ./requirements.txt:/home/jovyan/requirements.txt
     ports:
       - "8888:8888"
