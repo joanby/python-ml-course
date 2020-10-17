@@ -33,7 +33,7 @@ node [shape=box] ;
 14 -> 15 ;
 16 [label="mse = 7.862\nsamples = 24\nvalue = 14.042"] ;
 14 -> 16 ;
-17 [label="nox <= 0.605\nmse = 14.674\nsamples = 74\nvalue = 11.978"] ;
+17 [label="nox <= 0.606\nmse = 14.674\nsamples = 74\nvalue = 11.978"] ;
 11 -> 17 ;
 18 [label="mse = 18.606\nsamples = 12\nvalue = 16.633"] ;
 17 -> 18 ;
