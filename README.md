@@ -1,4 +1,5 @@
-# [Curso completo de Machine Learning: Data Science en Python](https://www.udemy.com/course/machinelearningpython/)
+# [Curso completo de Machine Learning: Data Science en Python](https://cursos.frogamesformacion.com/courses/machine-learning-python)
+
 
 ## Requisitos
 * Se necesitan conocimientos de matemáticas de bachillerato o conocimientos básicos de estadística
@@ -37,3 +38,79 @@ Además, en el curso encontrarás ejercicios, datasets para practicar basados en
 - Analistas de datos que quieran ir más allá gracias al Machine Learning
 - Cualquier persona que no esté satisfecha con su propio trabajo y busque empezar a trabajar como un Data Scientist profesional
 - Cualquier persona que quiera dar valor añadido a su propia empresa utilizando las potentes herramientas de Machine Learning
+
+
+## Actualización Septiembre 2023 a Python 3.11
+
+* T1-1: 
+    * La URL WinterOlympicMedals deja de estar disponible y pasamos a tener el fichero en https://docs.google.com/spreadsheets/d/e/2PACX-1vRgDmJGDkg6EYP8aTOyOM2bU1Q8PBCi9HImsXr-MVKj08gJkG_c5OsfiOUCmYYLzUWa6-diTJXdu60K/pub?output=csv
+* T1-2: Sin cambios
+* T1-3: Sin cambios
+* T2-1: Sin cambios
+* T2-2: Sin cambios
+* T2-3: Sin cambios
+* T2-4: Append ha sido cambiado por Concat en pandas para añadir filas.
+* T3-1: Sin cambios.
+* T4-1: Sin cambios.
+* T4-2: Sin cambios.
+* T4-3: Sin cambios.
+* T4-4: 
+    * RFE requiere ahora especificar el parámetro `n_features_to_select`.
+* T4-5:
+    * El truco para convertir la serie a data frame usando np.newaxis ahora no funciona. Debe hacerse con X_data = X.values.reshape(-1,1). 
+* T5-1:
+    * Sin cambios.
+* T5-2:
+    * Sin cambios.
+* T5-3:
+    * Actualizar ggplot a mano con los ficheros utils y smoothers.
+* T6-1: 
+    * Sin cambios.
+* T6-2: 
+    * Sin cambios.
+* T6-3: 
+    * Sin cambios.
+* T6-4: 
+    * Sin cambios.
+* T6-5: 
+    * Sin cambios.
+* T6-6: 
+    * Sin cambios.
+* T6-7: 
+    * Instalar a mano pyclust y treelib 
+* T7-1: 
+    * Instalar a mano graphviz y corregir el error según documentación de Stackoverflow.
+* T7-2:
+    * Sin cambios.
+* T8-1:
+    * Sin cambios.
+* T8-2:
+    * Sin cambios.
+* T8-3:
+    * Sin cambios.
+* T8-4:
+    * Sin cambios.
+* T8-5:
+    * Sin cambios.
+* T8-6:
+    * Sin cambios.
+* T9-1: 
+    * Al eliminar una columna con drop, se requiere que el parámetro posicional tenga el nombre `axis`.
+* T9-2:
+    * Sin cambios.
+* T9-3:
+    * Corregido el algoritmo de KNN para evaluar la predicción.
+* T10-1:
+    * Cambiada la librería de plotly por chart_studio (v 5.9.0)
+    * Añadida sintaxis para instalar `chart_studio` desde el Jupyter Notebook
+* T10-2: 
+    * Cambiada la librería de plotly por chart_studio (v 5.9.0)
+* T10-3: 
+    * Cambiada la librería de plotly por chart_studio (v 5.9.0)
+* T11-1:
+    * La primera vez que instalamos TF en Python 3.11 nos da el siguiente error: `partially initialized module 'charset_normalizer' has no attribute 'md__mypyc' (most likely due to a circular import)`. Para solucionarlo, forzamos la actualización de la siguiente librería `charset-normalizer==3.1.0` con pip.
+* T11-2:
+    * Cambiada la librería de carga de imágenes de `import skimage.data as imd` por `import skimage.io as imd`.
+    * Ajustado el código para usar la compatibilidad de tf2 con tf1
+* T11-3: Cambiada la carga del dataframe de MNIST a través de Keras
+
