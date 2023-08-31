@@ -99,7 +99,7 @@ Además, en el curso encontrarás ejercicios, datasets para practicar basados en
 * T9-2:
     * Sin cambios.
 * T9-3:
-    * Corregido el algoritmo de KNN para evaluar la predicción.
+    * Corregido el algoritmo de KNN para evaluar la predicción en el conjunto de test. Cuidado, aunque se evalúe en el test, se compara con los valores conocidos del conjunto de entrenamiento (si no, da error!).
 * T10-1:
     * Cambiada la librería de plotly por chart_studio (v 5.9.0)
     * Añadida sintaxis para instalar `chart_studio` desde el Jupyter Notebook
