@@ -1,0 +1,24 @@
+# Versiones exactas con las que se ha verificado la rama update-2026 (octubre de 2026).
+# Fijadas a propósito: con versiones sin fijar, el curso deja de funcionar solo cuando cambian las librerías.
+# En Google Colab no hace falta instalar nada salvo lo que el propio notebook instala con !pip.
+chart-studio==1.1.0
+graphviz==0.21
+ipython==9.17.1
+ipywidgets==8.1.9
+matplotlib==3.11.2
+numpy==2.5.4
+pandas==3.0.6
+plotly==7.1.0
+plotnine==0.15.8
+pyclust==0.2.0
+treelib==1.8.0  # lo necesita pyclust y no lo declara
+rpy2==3.6.9  # necesita R instalado (con el paquete extRemes)
+scikit-image==0.26.0
+scikit-learn==1.9.1
+scipy==1.18.1
+seaborn==0.13.2
+statsmodels==0.15.0
+tensorflow==2.21.0
+tf-keras==2.21.0  # tf.layers de TensorFlow 1 (compat.v1) necesita Keras 2
+urllib3==2.8.0
+jupyter
