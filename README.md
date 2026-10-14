@@ -1,5 +1,7 @@
 # [Curso completo de Machine Learning: Data Science en Python](https://www.udemy.com/course/machinelearningpython/)
 
+> **🆕 Octubre de 2026 — rama [`update-2026`](https://github.com/joanby/python-ml-course/tree/update-2026):** el mismo curso, con los notebooks adaptados a las librerías de hoy (pandas 3, NumPy 2, scikit-learn 1.9, TensorFlow 2). Con las versiones actuales, varios notebooks de esta rama principal dan error. Qué ha cambiado y por qué: [`CAMBIOS-2026.md`](https://github.com/joanby/python-ml-course/blob/update-2026/CAMBIOS-2026.md).
+
 ## Requisitos
 * Se necesitan conocimientos de matemáticas de bachillerato o conocimientos básicos de estadística
 * Se recomienda saber programar un poco para enfocarse en aprender las técnicas de análisis en Python aunque no es totalmente necesario
